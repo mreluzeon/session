@@ -9,8 +9,8 @@ const mapImport = require('./map.json');
 // state
 
 let player = {
-    x: 1,
-    y: 1,
+    x: 2,
+    y: 2,
     cheatsheets: 0
 }
 
