@@ -11,6 +11,7 @@ const gameMaps = require('./map.json');
 // state
 
 let time = 0; // in minutes = seconds
+let currentMusic;
 
 let keyWasPressed = false;
 
@@ -28,6 +29,10 @@ let player = {
 
 // actions :: [{button: string, action: string}] 
 let actions = [];
+
+function musicChangeCallback(data) {
+	currentMusic = data;
+}
 
 function exec(command) {
     let parsedCommand = command.split(/ /);
@@ -119,6 +124,13 @@ var interval = setInterval(() => {
     process.stdout.write(`teacher reputation: ${utils.showRep(player.teacherReputation)}\n`);
     // Knowledge
     process.stdout.write(`knowledge: ${utils.showKnowledge(player.knowledge)}`);
+
+    // Print the teacher (if one exists)
+    if (gameMaps[player.map].hasOwnProperty("teacher")) {
+    	const teacher = gameMaps[player.map].teacher;
+    	process.stdout.write(`\x1b[${teacher.y+1};${teacher.x+2}H\b`);
+    	process.stdout.write(`${utils.teachers[teacher.subject]}`);
+    }
     
     // Print the player
     process.stdout.write(`\x1b[${player.y+1};${player.x+2}H\b${utils.player}`);
