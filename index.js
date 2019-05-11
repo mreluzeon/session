@@ -7,17 +7,23 @@ const load = require('audio-loader');
 const utils = require('./utils.js');
 const unpure = require('./unpure.js');
 const gameMaps = require('./map.json');
+const musicManager = require('./musicmanager.js');
 
 // state
 
 let time = 0; // in minutes = seconds
+let currentMusic;
 
 let keyWasPressed = false;
 
 let player = {
     x: 10,
     y: 5,
-    cheatsheets: [],
+    cheatsheets: {
+	logic: 4,
+	math: 0,
+	language: 0
+    },
     map: 'debug',
     hp: 1,
     money: 1,
@@ -31,19 +37,31 @@ let students = [{
     want: "logic",
     x: 3, y: 3,
     map: "debug",
-    exp: 60*4
+    exp: 100*4
 }];
 
-// actions :: [{button: string, action: string}] 
-let actions = [];
+let action = {
+    message: "aaa",
+    command: ""
+};
+
+function musicChangeCallback(data) {
+	currentMusic = data;
+}
 
 function exec(command) {
     let parsedCommand = command.split(/ /);
     if (parsedCommand[0] == 'load') {
+	musicManager.change(`./music/${parsedCommand[1]}.wav`, currentMusic, musicChangeCallback)
 	process.stdout.write('\x1bc\x1b[?25l');
 	player.map = parsedCommand[1];
 	player.x = gameMaps[parsedCommand[1]].init.x;
 	player.y = gameMaps[parsedCommand[1]].init.y;
+    } else if (parsedCommand[0] == 'give') {
+	if (player.cheatsheets[parsedCommand[1]] > 0 && player.money < 5) {
+	    player.cheatsheets[parsedCommand[1]]--;
+	    player.money++;
+	}
     }
 }
 
@@ -85,6 +103,12 @@ process.stdin.on('keypress', (str, key) => {
 		player.x--;
 	    }
 	    break;
+	case 'e':
+	    if (action.message != "") {
+		action.message = "";
+		exec(action.command);
+		action.command = "";
+	    }	    
 	}
 	// Now, the player can't press a key
 	keyWasPressed = true;
@@ -96,10 +120,23 @@ process.stdin.on('keypress', (str, key) => {
     	}
     });
 
-    //students.forEach(({x, y, ))
+    let isAny = false;    
+    students.forEach(({x, y, want, map}) => {
+	if (player.map == map && x == player.x && y == player.y) {
+	    action.message = "Press [e] to give a shpora about " + want;
+	    action.command = "give " + want;
+	    isAny = true;
+	}
+    })
+    if (!isAny) {
+	action.message = "";
+	action.command = "";
+    }
 });
 
 // gameloop
+
+musicManager.play('./music/debug.wav', musicChangeCallback);
 
 process.stdout.write('\x1bc\x1b[?25l');
 
@@ -129,18 +166,30 @@ var interval = setInterval(() => {
     process.stdout.write(`teacher reputation: ${utils.showRep(player.teacherReputation)}\n`);
     // Knowledge
     process.stdout.write(`knowledge: ${utils.showKnowledge(player.knowledge)}`);
-    
-    // Print the player
-    process.stdout.write(`\x1b[${player.y+1};${player.x+2}H\b${utils.player}`);
 
+    unpure.printCheatsheets(player.cheatsheets);
+
+    process.stdout.write("\n\x1b[K"+action.message);
+    
     // Updating students
     students.forEach(i => {
 	i.exp--;
 	if (player.map == i.map) {
-	    process.stdout.write(`\x1b[${i.y};${i.x}H${utils.student}`);
+	    process.stdout.write(`\x1b[${i.y+1};${i.x+1}H${utils.student}`);
 	}
     });
     students = students.filter(i => i.exp > 0);
+    
+
+    // Print the teacher (if one exists)
+    if (gameMaps[player.map].hasOwnProperty("teacher")) {
+    	const teacher = gameMaps[player.map].teacher;
+    	process.stdout.write(`\x1b[${teacher.y+1};${teacher.x+2}H\b`);
+    	process.stdout.write(`${utils.teachers[teacher.subject]}`);
+    }
+    
+    // Print the player
+    process.stdout.write(`\x1b[${player.y+1};${player.x+2}H\b${utils.player}`);
     
     // Reset keypress
     keyWasPressed = false;

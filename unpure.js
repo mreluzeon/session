@@ -14,12 +14,18 @@ function printGameMap(map){
 		process.stdout.write(utils.empty);
 		break;
 	    default:
-		process.stdout.write('shit!');
+		process.stdout.write(i);
 	    }});
 	process.stdout.write('\n');
     });
 }
 
+function printCheatsheets(cheatsheets){
+    for (let i in cheatsheets) {
+	process.stdin.write(`\n${i}: ${cheatsheets[i]}`);
+    }
+}
+
 module.exports = {
-    printGameMap
+    printGameMap, printCheatsheets
 };

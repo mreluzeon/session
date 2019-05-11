@@ -11,8 +11,10 @@
 		"#....................#",
 		"######################"],
 	"triggers": [
-	    {"x": 1, "y": 1, "command": "load next"}
+	    {"x": 1, "y": 1, "command": "load next"},
+	    {"x": 5, "y": 1, "command": "exam math"}
 	],
+	"teacher": {"x": 5, "y": 1, "subject": "math"},
 	"init": {"x": 5, "y": 5}
     },
     "next": {
