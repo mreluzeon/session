@@ -26,6 +26,14 @@ let player = {
     knowledge: 4
 };
 
+// students :: [{want: string, x: int, y: int, map: string, exp: int}]
+let students = [{
+    want: "logic",
+    x: 3, y: 3,
+    map: "debug",
+    exp: 60*4
+}];
+
 // actions :: [{button: string, action: string}] 
 let actions = [];
 
@@ -86,7 +94,9 @@ process.stdin.on('keypress', (str, key) => {
     	if (x == player.x && y == player.y) {
 	    exec(command);
     	}
-    })    
+    });
+
+    //students.forEach(({x, y, ))
 });
 
 // gameloop
@@ -123,6 +133,15 @@ var interval = setInterval(() => {
     // Print the player
     process.stdout.write(`\x1b[${player.y+1};${player.x+2}H\b${utils.player}`);
 
+    // Updating students
+    students.forEach(i => {
+	i.exp--;
+	if (player.map == i.map) {
+	    process.stdout.write(`\x1b[${i.y};${i.x}H${utils.student}`);
+	}
+    });
+    students = students.filter(i => i.exp > 0);
+    
     // Reset keypress
     keyWasPressed = false;
     

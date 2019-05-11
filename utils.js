@@ -5,6 +5,7 @@ const {maxHP, maxMoney, maxRep, maxKnowledge, cheatsheetCost, timeInLibrary} = r
 const player = colors.cyan("@");
 const wall = colors.gray("#");
 const empty = ".";
+const student = colors.magenta("$");
 
 function showTime(time){
     return `${("0"+Math.floor(time/60)).substr(-2)}:`
@@ -21,5 +22,5 @@ const showRep = show(maxRep);
 const showKnowledge = show(maxKnowledge);
 
 module.exports = {
-    player, wall, empty, showTime, showHP, showMoney, showRep, showKnowledge
+    player, wall, empty, showTime, showHP, showMoney, showRep, showKnowledge, student
 };
