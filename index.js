@@ -32,7 +32,7 @@ let actions = [];
 function exec(command) {
     let parsedCommand = command.split(/ /);
     if (parsedCommand[0] == 'load') {
-	process.stdout.write('\x1bc');
+	process.stdout.write('\x1bc\x1b[?25l');
 	player.map = parsedCommand[1];
 	player.x = gameMaps[parsedCommand[1]].init.x;
 	player.y = gameMaps[parsedCommand[1]].init.y;
