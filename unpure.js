@@ -1,10 +1,10 @@
-// print = process.stdout.write;
+var exec = require('child_process').exec;
 
 const utils = require('./utils.js');
 
-function printGameMap({map}){
-//    console.log(print, map);
-    map.forEach(row => {
+function printGameMap(map){
+//    console.log(map.map);
+    map.map.forEach(row => {
 	row.split('').forEach(i => {
 	    switch (i) {
 	    case '#':
