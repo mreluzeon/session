@@ -8,6 +8,7 @@ const utils = require('./utils.js');
 const unpure = require('./unpure.js');
 const gameMaps = require('./map.json');
 const musicManager = require('./musicmanager.js');
+const definitions = require('./definitions.json');
 
 // state
 
@@ -41,7 +42,7 @@ let students = [{
 }];
 
 let action = {
-    message: "aaa",
+    message: "",
     command: ""
 };
 
@@ -82,33 +83,58 @@ process.stdin.on('keypress', (str, key) => {
 	case 'w':
 	    player.y--;
 	    if (currentMap.map[player.y][player.x] == "#") {
-		player.y++;
+			player.y++;
 	    }
 	    break;
 	case 's':
 	    player.y++;
 	    if (currentMap.map[player.y][player.x] == "#") {
-		player.y--;
+			player.y--;
 	    }
 	    break;
 	case 'a':
 	    player.x--;
 	    if (currentMap.map[player.y][player.x] == "#") {
-		player.x++;
+			player.x++;
 	    }
 	    break;
 	case 'd':
 	    player.x++;
 	    if (currentMap.map[player.y][player.x] == "#") {
-		player.x--;
+			player.x--;
 	    }
 	    break;
 	case 'e':
 	    if (action.message != "") {
-		action.message = "";
-		exec(action.command);
-		action.command = "";
-	    }	    
+			action.message = "";
+			exec(action.command);
+			action.command = "";
+	    }
+	    break;
+	case 'r':
+		if (player.map == "library" && player.knowledge < definitions.maxKnowledge) {
+			time += definitions.timeInLibrary;
+			++player.knowledge;
+		}
+		break;
+	case 'i':
+		if (player.map == "library" && player.knowledge >= definitions.cheatsheetCost) {
+			player.knowledge -= definitions.cheatsheetCost;
+			++player.cheatsheets.logic;
+		}
+		break;
+	case 'o':
+		if (player.map == "library" && player.knowledge >= definitions.cheatsheetCost) {
+			player.knowledge -= definitions.cheatsheetCost;
+			++player.cheatsheets.math;
+		}
+		break;
+	case 'p':
+		if (player.map == "library" && player.knowledge >= definitions.cheatsheetCost) {
+			player.knowledge -= definitions.cheatsheetCost;
+			++player.cheatsheets.language;
+		}
+		break;
 	}
 	// Now, the player can't press a key
 	keyWasPressed = true;
@@ -116,7 +142,7 @@ process.stdin.on('keypress', (str, key) => {
 
     currentMap.triggers.forEach(({x, y, command}) => {
     	if (x == player.x && y == player.y) {
-	    exec(command);
+	    	exec(command);
     	}
     });
 
@@ -163,7 +189,7 @@ var interval = setInterval(() => {
     process.stdout.write(`money: ${utils.showMoney(player.money)}`);
     // Reputation
     process.stdout.write(`\nstudent reputation: ${utils.showRep(player.studentReputation)} `);
-    process.stdout.write(`teacher reputation: ${utils.showRep(player.teacherReputation)}\n`);
+    process.stdout.write(`\nteacher reputation: ${utils.showRep(player.teacherReputation)}\n`);
     // Knowledge
     process.stdout.write(`knowledge: ${utils.showKnowledge(player.knowledge)}`);
 
