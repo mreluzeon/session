@@ -88,6 +88,7 @@ function exec(command) {
     } else if (!examMode.isExamMode
 	       && parsedCommand[0] == 'exam'
 	       && exams.includes(parsedCommand[1])) {
+	musicManager.change(`./music/exam.wav`, currentMusic, musicChangeCallback)
 	process.stdout.write('\x1bc');
 	process.stdout.write('\x1bc\x1b[?25l');
 	examMode.examSubj = parsedCommand[1];
@@ -143,16 +144,6 @@ process.stdin.on('keypress', (str, key) => {
 		action.command = "";
 	    }
 	    break;
-	case 'u':
-	    if (examMode.isExamMode) {
-		if (player.cheatsheets[examMode.examSubj] > 0) {
-		    player.cheatsheets[examMode.examSubj]--;
-		    examMode.qustion = {};
-		    examMode.rightAnswered++;
-		    examMode.answered++;
-		}
-	    }
-	    break;
 	case 'r':
 	    if (player.map == "library" && player.knowledge < definitions.maxKnowledge) {
 		time += definitions.timeInLibrary;
@@ -185,6 +176,14 @@ process.stdin.on('keypress', (str, key) => {
     if (examMode.isExamMode && ['0', '1', '2', '3', '4'].includes(key.sequence)) {
 	examMode.playersAnswer = key.sequence;
 	console.log(key.sequence, examMode.playersAnswer);
+    }
+    if (examMode.isExamMode && key.sequence == 'u') {
+	if (player.cheatsheets[examMode.examSubj] > 0) {
+	    player.cheatsheets[examMode.examSubj]--;
+	    examMode.qustion = {};
+	    examMode.rightAnswered++;
+	    examMode.answered++;
+	}
     }
     
     let isAny = false;    
@@ -319,6 +318,7 @@ function examModeLoop(){
 	    delete player.cheatsheets[examMode.examSubj];
 	}
 	examMode.isExamMode = false;
+	musicManager.change(`./music/prepod.wav`, currentMusic, musicChangeCallback)
 	process.stdout.write('\x1bc\x1b[?25l');
     }
     
