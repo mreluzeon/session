@@ -1,0 +1,308 @@
+{
+    "corridor_1": {
+        "map": ["########---########",
+		"########...########",
+		"########...########",
+		"-.................-",
+		"-.................-",
+		"########...########",
+		"########...########",
+		"########---########"],
+	"triggers": [
+	    {"x": 0, "y": 3, "command": "load corridor_6"},
+	    {"x": 0, "y": 4, "command": "load corridor_6"},
+	    {"x": 8, "y": 7, "command": "load corridor_2"},
+	    {"x": 9, "y": 7, "command": "load corridor_2"},
+	    {"x": 10, "y": 7, "command": "load corridor_2"},
+	    {"x": 18, "y": 3, "command": "load corridor_9"},
+	    {"x": 18, "y": 4, "command": "load corridor_9"}
+	],
+	"init": {"x": 5, "y": 5}
+    }
+    
+    "corridor_2": {
+	"map": ["########---########",
+		"########...########",
+		"########...########",
+		"#######-...-#######",
+		"#######-...-#######",
+		"########...########",
+		"########...########",
+		"########---########"],
+	"triggers": [
+	    {"x": 8, "y": 0, "command": "load corridor_1"},
+	    {"x": 9, "y": 0, "command": "load corridor_1"},
+	    {"x": 10, "y": 0, "command": "load corridor_1"},
+	    {"x": 8, "y": 7, "command": "load corridor_1"},
+	    {"x": 9, "y": 7, "command": "load corridor_1"},
+	    {"x": 10, "y": 7, "command": "load corridor_1"},
+	    // {"x": 7, "y": 3, "command": "load (лестница на второй этаж)"},
+	    // {"x": 7, "y": 4, "command": "load (лестница на второй этаж)"},
+	    // {"x": 11, "y": 3, "command": "load (лестница на второй этаж)"},
+	    // {"x": 11, "y": 4, "command": "load (лестница на второй этаж)"},
+	],
+	"init": {"x": 5, "y": 5}
+    }
+    "corridor_3": {
+        "map": ["########---########",
+		"########...########",
+		"########...########",
+		"-.................-",
+		"-.................-",
+		"########...########",
+		"########...########",
+		"########---########"],
+	"triggers": [
+	    {"x": 0, "y": 3, "command": "load corridor_4"},
+	    {"x": 0, "y": 4, "command": "load corridor_4"},
+	    {"x": 8, "y": 0, "command": "load corridor_2"},
+	    {"x": 9, "y": 0, "command": "load corridor_2"},
+	    {"x": 10, "y": 0, "command": "load corridor_2"},
+	    {"x": 18, "y": 3, "command": "load corridor_7"},
+	    {"x": 18, "y": 4, "command": "load corridor_7"},
+	],
+	
+	"init": {"x": 5, "y": 5}
+    }
+    "corridor_5": {
+	"map": ["########---########",
+		"########...########",
+		"########...########",
+		"#######-...########",
+		"#######-...########",
+		"########...########",
+		"########...########",
+		"########---########"],
+	"triggers": [
+	    {"x": 8, "y": 0, "command": "load corridor_6"},
+	    {"x": 9, "y": 0, "command": "load corridor_6"},
+	    {"x": 10, "y": 0, "command": "load corridor_6"},
+	    {"x": 8, "y": 7, "command": "load corridor_4"},
+	    {"x": 9, "y": 7, "command": "load corridor_4"},
+	    {"x": 10, "y": 7, "command": "load corridor_4"},
+	    {"x": 7, "y": 3, "command": "load lecture_hall_5"},
+	    {"x": 7, "y": 4, "command": "load lecture_hall_5"}
+	],
+	"init": {"x": 5, "y": 5}
+    }
+    "corridor_8": {
+	"map": ["########---########",
+		"########...########",
+		"########...########",
+		"########...-#######",
+		"########...-#######",
+		"########...########",
+		"########...########",
+		"########---########",
+		"ghjtwqyutiyut",
+		"uaysdoiuaydiu"]
+	"triggers": [
+	    {"x": 8, "y": 0, "command": "load corridor_9"}
+	    {"x": 9, "y": 0, "command": "load corridor_9"}
+	    {"x": 10, "y": 0, "command": "load corridor_9"}
+	    {"x": 8, "y": 7, "command": "load corridor_7"}
+	    {"x": 9, "y": 7, "command": "load corridor_7"}
+	    {"x": 10, "y": 7, "command": "load corridor_7"}
+	    {"x": 11, "y": 3, "command": "load lecture_hall_6"}
+	    {"x": 11, "y": 4, "command": "load lecture_hall_6"}
+	]
+	"init": {"x": 5, "y": 5}
+    }
+    "corridor_4": {
+	"map": ["########---########",
+		"########...########",
+		"#######-...########",
+		"#######-..........-",
+		"########..........-",
+		"###################",
+		"###################",
+		"###################",
+		"ghjtwqyutiyut",
+		"uaysdoiuaydiu"]
+	"triggers": [
+	    {"x": 8, "y": 0, "command": "load corridor_5"}
+	    {"x": 9, "y": 0, "command": "load corridor_5"}
+	    {"x": 10, "y": 0, "command": "load corridor_5"}
+	    {"x": 18, "y": 3, "command": "load corridor_3"}
+	    {"x": 18, "y": 4, "command": "load corridor_3"}
+	    {"x": 7, "y": 2, "command": "load lecture_hall_4"}
+	    {"x": 7, "y": 3, "command": "load lecture_hall_4"}
+	]
+	"init": {"x": 5, "y": 5}
+    }
+    "corridor_7": {
+	"map": ["########---########",
+		"########...########",
+		"########...-#######",
+		"-..........-#######",
+		"-..........########",
+		"###################",
+		"###################",
+		"###################",
+		"ghjtwqyutiyut",
+		"uaysdoiuaydiu"]
+	"triggers": [
+	    {"x": 8, "y": 0, "command": "load corridor_8"}
+	    {"x": 9, "y": 0, "command": "load corridor_8"}
+	    {"x": 10, "y": 0, "command": "load corridor_8"}
+	    {"x": 0, "y": 3, "command": "load corridor_3"}
+	    {"x": 0, "y": 4, "command": "load corridor_3"}
+	    {"x": 11, "y": 2, "command": "load lecture_hall_3"}
+	    {"x": 11, "y": 3, "command": "load lecture_hall_3"}
+	]
+	"init": {"x": 5, "y": 5}
+    }
+    "corridor_6": {
+	"map": ["###################",
+		"###################",
+		"###################",
+		"########..........-",
+		"#######-..........-",
+		"#######-...########",
+		"########...########",
+		"########---########",
+		"ghjtwqyutiyut",
+		"uaysdoiuaydiu"]
+	"triggers": [
+	    {"x": 8, "y": 7, "command": "load corridor_5"}
+	    {"x": 9, "y": 7, "command": "load corridor_5"}
+	    {"x": 10, "y": 7, "command": "load corridor_5"}
+	    {"x": 18, "y": 3, "command": "load corridor_1"}
+	    {"x": 18, "y": 4, "command": "load corridor_1"}
+	    {"x": 7, "y": 4, "command": "load lecture_hall_1"}
+	    {"x": 7, "y": 5, "command": "load lecture_hall_1"}
+	]
+	"init": {"x": 5, "y": 5}
+    }
+    "corridor_9": {
+	"map": ["###################",
+		"###################",
+		"###################",
+		"-..........########",
+		"-..........-#######",
+		"########...-#######",
+		"########...########",
+		"########---########",
+		"ghjtwqyutiyut",
+		"uaysdoiuaydiu"]
+	"triggers": [
+	    {"x": 8, "y": 7, "command": "load corridor_8"}
+	    {"x": 9, "y": 7, "command": "load corridor_8"}
+	    {"x": 10, "y": 7, "command": "load corridor_8"}
+	    {"x": 0, "y": 3, "command": "load corridor_1"}
+	    {"x": 0, "y": 4, "command": "load corridor_1"}
+	    {"x": 11, "y": 4, "command": "load lecture_hall_2"}
+	    {"x": 11, "y": 5, "command": "load lecture_hall_2"}
+	]
+	"init": {"x": 5, "y": 5}
+    }
+    
+    "lecture_hall_1": {
+	"map": ["###################",
+		"#.................#",
+		"#.###...###...###.#",
+		"#.................#",
+		"#.###...###...###.#",
+		"#.................-",
+		"#......../........-",
+		"###################",
+		"ghjtwqyutiyut",
+		"uaysdoiuaydiu"]
+	"triggers": [
+	    {"x": 18, "y": 5, "command": "load corridor_6"}
+	    {"x": 18, "y": 6, "command": "load corridor_6"}
+	    
+	]
+	"init": {"x": 5, "y": 5}
+    }
+    "lecture_hall_2": {
+	"map": ["###################",
+		"#.................#",
+		"#.###...###...###.#",
+		"#.................#",
+		"#.###...###...###.#",
+		"-.................#",
+		"-........=........#",
+		"###################",
+		"ghjtwqyutiyut",
+		"uaysdoiuaydiu"]
+	"triggers": [
+	    {"x": 0, "y": 5, "command": "load corridor_9"}
+	    {"x": 0, "y": 6, "command": "load corridor_9"}
+	    
+	]
+	"init": {"x": 5, "y": 5}
+    }
+    "lecture_hall_3": {
+	"map": ["###################",
+		"-.................#",
+		"-.###...###...###.#",
+		"#.................#",
+		"#.###...###...###.#",
+		"#.................#",
+		"#........+........#",
+		"###################",
+		"ghjtwqyutiyut",
+		"uaysdoiuaydiu"]
+	"triggers": [
+	    {"x": 0, "y": 1, "command": "load corridor_7"}
+	    {"x": 0, "y": 2, "command": "load corridor_7"}
+	    
+	]
+	"init": {"x": 5, "y": 5}
+    }
+    "lecture_hall_4": {
+	"map": ["###################",
+		"#.................-",
+		"#.###...###...###.-",
+		"#.................#",
+		"#.###...###...###.#",
+		"#.................#",
+		"#........№........#",
+		"###################",
+		"ghjtwqyutiyut",
+		"uaysdoiuaydiu"]
+	"triggers": [
+	    {"x": 18, "y": 1, "command": "load corridor_4"}
+	    {"x": 18, "y": 2, "command": "load corridor_4"}
+	    
+	]
+	"init": {"x": 5, "y": 5}
+    }
+    "lecture_hall_5": {
+	"map": ["###################",
+		"#.................#",
+		"#.###...###...###.#",
+		"#.................-",
+		"#.###...###...###.-",
+		"#.................#",
+		"#........$........#",
+		"###################",
+		"ghjtwqyutiyut",
+		"uaysdoiuaydiu"]
+	"triggers": [
+	    {"x": 18, "y": 3, "command": "load corridor_5"}
+	    {"x": 18, "y": 4, "command": "load corridor_5"}
+	    
+	]
+	"init": {"x": 5, "y": 5}
+    }
+    "lecture_hall_6": {
+	"map": ["###################",
+		"#.................#",
+		"#.###...###...###.#",
+		"-.................#",
+		"-.###...###...###.#",
+		"#.................#",
+		"#........?........#",
+		"###################",
+		"ghjtwqyutiyut",
+		"uaysdoiuaydiu"]
+	"triggers": [
+	    {"x": 0, "y": 3, "command": "load corridor_8"}
+	    {"x": 0, "y": 4, "command": "load corridor_8"}
+	    
+	]
+	"init": {"x": 5, "y": 5}
+    }
+}

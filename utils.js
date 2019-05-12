@@ -9,6 +9,7 @@ const teachers = {
 	math: colors.red("&"),
 	language: colors.green("&")
 };
+
 const empty = ".";
 const student = colors.magenta("$");
 

@@ -8,11 +8,23 @@ const utils = require('./utils.js');
 const unpure = require('./unpure.js');
 const gameMaps = require('./map.json');
 const musicManager = require('./musicmanager.js');
+const questions = require('./questions.json'); 
 
 // state
 
 let time = 0; // in minutes = seconds
 let currentMusic;
+
+let exams = ['math', 'logic', 'language'];
+
+let examMode = {
+    isExamMode: false,
+    examSubj: "",
+    question: {},
+    rightAnswered: 0,
+    playersAnswer: "",
+    answered: 0
+};
 
 let keyWasPressed = false;
 
@@ -62,11 +74,21 @@ function exec(command) {
 	    player.cheatsheets[parsedCommand[1]]--;
 	    player.money++;
 	}
+    } else if (!examMode.isExamMode
+	       && parsedCommand[0] == 'exam'
+	       && exams.includes(parsedCommand[1])) {
+	process.stdout.write('\x1bc');
+	process.stdout.write('\x1bc\x1b[?25l');
+	examMode.examSubj = parsedCommand[1];
+	examMode.isExamMode = true;
+	examMode.question = {};
+	examMode.rightAnswered = 0;
+	examMode.playersAnswer = "";
+	examMode.answered = 0;
     }
 }
 
 // key reader
-
 readline.emitKeypressEvents(process.stdin);
 process.stdin.setRawMode(true);
 
@@ -108,19 +130,46 @@ process.stdin.on('keypress', (str, key) => {
 		action.message = "";
 		exec(action.command);
 		action.command = "";
-	    }	    
+	    }
+	    break;
+	case 'u':
+	    if (examMode.isExamMode) {
+		if (player.cheatsheets[examMode.examSubj] > 0) {
+		    player.cheatsheets[examMode.examSubj]--;
+		    examMode.qustion = {};
+		    examMode.rightAnswered++;
+		    examMode.answered++;
+		}
+	    }
+	    break;
 	}
 	// Now, the player can't press a key
 	keyWasPressed = true;
     }
 
+    if (examMode.isExamMode && ['0', '1', '2', '3', '4'].includes(key.sequence)) {
+	examMode.playersAnswer = key.sequence;
+	console.log(key.sequence, examMode.playersAnswer);
+    }
+    
+    let isAny = false;    
+
+    if (gameMaps[player.map].hasOwnProperty("teacher")) {
+	let teacher = gameMaps[player.map].teacher;
+	if (teacher.x == player.x && teacher.y == player.y) {
+	    action.message = "Press [e] to start exam";
+	    action.command = "exam " + teacher.subject;
+	    isAny = true;
+	}
+    }
+    
     currentMap.triggers.forEach(({x, y, command}) => {
     	if (x == player.x && y == player.y) {
 	    exec(command);
     	}
+	isAny = true;
     });
 
-    let isAny = false;    
     students.forEach(({x, y, want, map}) => {
 	if (player.map == map && x == player.x && y == player.y) {
 	    action.message = "Press [e] to give a shpora about " + want;
@@ -140,10 +189,7 @@ musicManager.play('./music/debug.wav', musicChangeCallback);
 
 process.stdout.write('\x1bc\x1b[?25l');
 
-// A PART OF STATE
-var interval = setInterval(() => {
-    time += 0.25;
-
+function normalMode(){
     // "Clear" the screen
     process.stdout.write('\x1b[0;0H');
     // process.stdout.write(`\x1b[0;0H\b${utils.player}`);
@@ -180,7 +226,6 @@ var interval = setInterval(() => {
     });
     students = students.filter(i => i.exp > 0);
     
-
     // Print the teacher (if one exists)
     if (gameMaps[player.map].hasOwnProperty("teacher")) {
     	const teacher = gameMaps[player.map].teacher;
@@ -193,5 +238,57 @@ var interval = setInterval(() => {
     
     // Reset keypress
     keyWasPressed = false;
+ 
+};
+
+function examModeLoop(){
+    if (examMode.question.question == undefined) {
+	process.stdout.write('\x1bc\x1b[?25l');	
+	let question = unpure.getQuestion(questions[examMode.examSubj]);
+	examMode.question = question;
+	examMode.playersAnswer = "";
+	examMode.question.right = question.answers[0];
+	examMode.question.answers = unpure.shuffle(question.answers);
+	examMode.question.right = examMode.question.answers.indexOf(examMode.question.right)+1;
+    }
     
+    process.stdout.write(`q: ${examMode.question.question}\n`);
+    examMode.question.answers.forEach((i, k) => {
+	process.stdout.write(`${k+1}: ${i}\n`);
+    });
+
+    process.stdout.write(`answered: ${examMode.answered}/2\n`);
+    process.stdout.write(`right: ${examMode.rightAnswered}/2`);
+    process.stdout.write(`answer: ${examMode.playersAnswer}`);
+    
+    if (examMode.playersAnswer != "") {
+	if (examMode.playersAnswer == examMode.question.right) {
+	    examMode.rightAnswered++;
+	}
+	examMode.question = {};
+	examMode.answered++;
+    }
+
+    if (examMode.answered >= 2) {
+	if (examMode.rightAnswered >= 1) {
+	    exams.splice(exams.indexOf(examMode.examSubj), 1);
+	    delete player.cheatsheets[examMode.examSubj];
+	}
+	examMode.isExamMode = false;
+	process.stdout.write('\x1bc\x1b[?25l');
+    }
+    
+    unpure.printCheatsheets(player.cheatsheets);
+}
+
+// A PART OF STATE
+var interval = setInterval(() => {
+    time += 0.25;
+    process.stdout.write('\x1b[0;0H');
+    
+    if (!examMode.isExamMode) {
+	normalMode();
+    } else {
+	examModeLoop();
+    }
 }, 250)
