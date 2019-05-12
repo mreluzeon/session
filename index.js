@@ -14,9 +14,12 @@ const definitions = require('./definitions.json');
 // state
 
 let time = 0; // in minutes = seconds
+let day = 0;
+let isCleared = false;
 let currentMusic;
 
 let exams = ['math', 'logic', 'language'];
+let examscount = exams.length;
 
 let examMode = {
     isExamMode: false,
@@ -34,10 +37,10 @@ let player = {
     y: 5,
     cheatsheets: {
 	logic: 4,
-	math: 0,
+	math: 4,
 	language: 0
     },
-    map: 'debug',
+    map: 'cor1',
     hp: 1,
     money: 1,
     studentReputation: 2,
@@ -47,9 +50,9 @@ let player = {
 
 // students :: [{want: string, x: int, y: int, map: string, exp: int}]
 let students = [{
-    want: "logic",
+    want: "math",
     x: 3, y: 3,
-    map: "debug",
+    map: "cor1",
     exp: 100*4
 }];
 
@@ -65,7 +68,14 @@ function musicChangeCallback(data) {
 function exec(command) {
     let parsedCommand = command.split(/ /);
     if (parsedCommand[0] == 'load') {
-	musicManager.change(`./music/${parsedCommand[1]}.wav`, currentMusic, musicChangeCallback)
+	if (gameMaps[parsedCommand[1]].hasOwnProperty("teacher")) {
+	    musicManager.change(`./music/prepod.wav`, currentMusic, musicChangeCallback)
+	} else if (['cor1', 'cor2', 'cor3'].includes(parsedCommand[1])
+		   && !['cor1', 'cor2', 'cor3'].includes(player.map)) {
+	    musicManager.change(`./music/cor.wav`, currentMusic, musicChangeCallback)
+	} else if (parsedCommand[1] == 'library') {
+	    musicManager.change(`./music/library.wav`, currentMusic, musicChangeCallback)
+	}
 	process.stdout.write('\x1bc\x1b[?25l');
 	player.map = parsedCommand[1];
 	player.x = gameMaps[parsedCommand[1]].init.x;
@@ -210,11 +220,21 @@ process.stdin.on('keypress', (str, key) => {
 
 // gameloop
 
-musicManager.play('./music/debug.wav', musicChangeCallback);
-
+musicManager.play('./music/cor.wav', musicChangeCallback);
 process.stdout.write('\x1bc\x1b[?25l');
 
 function normalMode(){
+    if (time >= 480 && time <= 500) {
+	if (!isCleared) { process.stdout.write('\x1bc\x1b[?25l'); isCleared = true };
+	process.stdin.write('День закончился\n');
+	process.stdin.write(`Сегодня вы сдали ${examscount - exams.length} экзаменов`);
+	return;
+    } else if (time >= 500) {
+	isCleared = false;
+	process.stdout.write('\x1bc\x1b[?25h');
+	process.exit();
+    }
+    
     // "Clear" the screen
     process.stdout.write('\x1b[0;0H');
     // process.stdout.write(`\x1b[0;0H\b${utils.player}`);
@@ -284,7 +304,6 @@ function examModeLoop(){
 
     process.stdout.write(`answered: ${examMode.answered}/2\n`);
     process.stdout.write(`right: ${examMode.rightAnswered}/2`);
-    process.stdout.write(`answer: ${examMode.playersAnswer}`);
     
     if (examMode.playersAnswer != "") {
 	if (examMode.playersAnswer == examMode.question.right) {

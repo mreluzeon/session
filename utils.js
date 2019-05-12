@@ -14,7 +14,7 @@ const empty = ".";
 const student = colors.magenta("$");
 
 function showTime(time){
-    return `${("0"+Math.floor(time/60)).substr(-2)}:`
+    return `${("0"+(9+Math.floor(time/60))).substr(-2)}:`
          + `${("0"+Math.floor(time%60)).substr(-2)}`;
 }
 
